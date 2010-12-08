@@ -25,8 +25,8 @@ import android.util.Log;
  * It is used by the FileUtils class.
  */
 public class DirectoryManager {
-	
 	private static final String LOG_TAG = "DirectoryManager";
+	private final static int TYPE_FLASH = 4;
 
 	/**
 	 * Determine if a file or directory exists.
@@ -270,4 +270,79 @@ public class DirectoryManager {
 		return retVal;
 	}
 
+
+	/**
+	 * Based on the System Info API (http://dev.w3.org/2009/dap/system-info/)
+	 * This method returns the device storage properties in JSON format.
+	 *  
+	 * @return a JSONArray containing all the storage options on this device.
+	 */
+	public static JSONArray getStorageUnits() {
+		JSONArray units = new JSONArray();
+		
+		units.put(getInternalStorage());
+		units.put(getExternalStorage());
+		
+		return units;		
+	}
+
+	/**
+	 * Reads the properties of the SD card.
+	 * 
+	 * @return JSONObject of the SD cards storage properties.
+	 */
+	private static JSONObject getExternalStorage() {
+		JSONObject external = new JSONObject();
+
+		String state = Environment.getExternalStorageState();
+		try {
+		    if (Environment.MEDIA_MOUNTED.equals(state)) {
+				external.put("type", TYPE_FLASH);
+				external.put("isWriteable", true);
+				File root = Environment.getExternalStorageDirectory();
+				StatFs stat = new StatFs(root.getAbsolutePath());
+				external.put("capacity", (stat.getBlockCount() * stat.getBlockSize()));
+				external.put("availableCapacity", (stat.getAvailableBlocks() * stat.getBlockSize()));
+				external.put("isRemoveable", true);
+		    } 
+		    else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+				external.put("type", TYPE_FLASH);
+				external.put("isWriteable", false);
+				File root = Environment.getExternalStorageDirectory();
+				StatFs stat = new StatFs(root.getAbsolutePath());
+				external.put("capacity", (stat.getBlockCount() * stat.getBlockSize()));
+				external.put("availableCapacity", (stat.getAvailableBlocks() * stat.getBlockSize()));
+				external.put("isRemoveable", true);
+		    } 
+		}
+		catch (JSONException e) {
+			Log.e(LOG_TAG, e.getMessage(),e);
+		}
+
+		return external;
+	}
+
+	/**
+	 * Reads the properties of the internal memory.
+	 * 
+	 * @return JSONObject of the internal memory properties.
+	 */
+	private static JSONObject getInternalStorage() {
+		JSONObject internal = new JSONObject();
+		
+		File root = Environment.getDataDirectory();
+		StatFs stat = new StatFs(root.getAbsolutePath());
+		try {
+			internal.put("type", TYPE_FLASH);
+			internal.put("isWriteable", root.canWrite());
+			internal.put("capacity", (stat.getBlockCount() * stat.getBlockSize()));
+			internal.put("availableCapacity", (stat.getAvailableBlocks() * stat.getBlockSize()));
+			internal.put("isRemoveable", false);
+		}
+		catch (JSONException e) {
+			Log.e(LOG_TAG, e.getMessage(),e);
+		}
+		
+		return internal;
+	}
 }
