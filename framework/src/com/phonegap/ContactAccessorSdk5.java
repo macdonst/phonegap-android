@@ -34,6 +34,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -744,22 +746,79 @@ public class ContactAccessorSdk5 extends ContactAccessor {
 	public boolean save(JSONObject contact) {
 		AccountManager mgr = AccountManager.get(mApp);
 		Account[] accounts = mgr.getAccounts();
-
+		
 		// TODO For now we are assuming that we should use the first 
 		// account found in the list of accounts
 		if (accounts.length < 1) {
 			return false;
 		}
+
+		Account selectedAccount = null;
+		if (accounts.length==1) {
+			selectedAccount = accounts[0];
+		}
+		else {
+			selectedAccount = findAccount(accounts);
+		}
 		
 		String id = getJsonString(contact, "id");
 		// Create new contact
 		if (id==null) {		
-		    return createNewContact(contact, accounts[0]);
+		    return createNewContact(contact, selectedAccount);
 		}
 		// Modify existing contact
 		else {
-			return modifyContact(id, contact, accounts[0]);
+			return modifyContact(id, contact, selectedAccount);
 		}
+	}
+
+	private Account findAccount(Account[] accounts) {
+		Account retVal = null;
+		//retVal = findGoogleAccount(accounts);
+		if (retVal == null) {
+			retVal = findEmailAccount(accounts);
+		}
+		return (retVal != null) ? retVal : accounts[0];
+	}
+
+	private Account findGoogleAccount(Account[] accounts) {
+		Log.d(LOG_TAG, "Looking for google.com account");
+		Account retVal = null;
+		for (Account account : accounts) {
+			if (account.type.equals("com.google")) {
+				retVal = account;
+				break;
+			}
+		}
+		return retVal;
+	}
+
+	private Account findEmailAccount(Account[] accounts) {
+		Log.d(LOG_TAG, "Looking for an email account");
+		Log.d(LOG_TAG, "Looking for an email account");
+		Log.d(LOG_TAG, "Looking for an email account");
+		Log.d(LOG_TAG, "Looking for an email account");
+		Log.d(LOG_TAG, "Looking for an email account");
+		Log.d(LOG_TAG, "Looking for an email account");
+		Log.d(LOG_TAG, "Looking for an email account");
+		Log.d(LOG_TAG, "Looking for an email account");
+		Log.d(LOG_TAG, "Looking for an email account");
+		Log.d(LOG_TAG, "Looking for an email account");
+		Log.d(LOG_TAG, "Looking for an email account");
+		Log.d(LOG_TAG, "Looking for an email account");
+		Log.d(LOG_TAG, "Looking for an email account");
+		Log.d(LOG_TAG, "Looking for an email account");
+		Account retVal = null;
+		Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+		Matcher m = null;
+		for (Account account : accounts) {
+			m = p.matcher(account.name);
+			if (m.matches()) {
+				retVal = account;
+				break;
+			}
+		}
+		return retVal;
 	}
 
 	/**
