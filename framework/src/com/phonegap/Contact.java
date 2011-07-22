@@ -14,7 +14,7 @@ import com.phonegap.api.Plugin;
 import com.phonegap.api.PluginResult;
 import android.util.Log;
 
-public class ContactManager extends Plugin {
+public class Contact extends Plugin {
 	
     private ContactAccessor contactAccessor;
 	private static final String LOG_TAG = "Contact Query";
@@ -31,7 +31,7 @@ public class ContactManager extends Plugin {
 	/**
 	 * Constructor.
 	 */
-	public ContactManager()	{
+	public Contact()	{
 	}
 	
 	/**

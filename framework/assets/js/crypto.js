@@ -8,8 +8,8 @@
 
 // TODO: Needs to be commented
 
-if (!PhoneGap.hasResource("crypto")) {
-PhoneGap.addResource("crypto");
+if (!PhoneGap.hasResource("com.phonegap.Crypto")) {
+PhoneGap.addResource("com.phonegap.Crypto");
 
 /**
 * @constructor
@@ -19,12 +19,12 @@ var Crypto = function() {
 
 Crypto.prototype.encrypt = function(seed, string, callback) {
     this.encryptWin = callback;
-    PhoneGap.exec(null, null, "Crypto", "encrypt", [seed, string]);
+    PhoneGap.exec(null, null, "com.phonegap.Crypto", "encrypt", [seed, string]);
 };
 
 Crypto.prototype.decrypt = function(seed, string, callback) {
     this.decryptWin = callback;
-    PhoneGap.exec(null, null, "Crypto", "decrypt", [seed, string]);
+    PhoneGap.exec(null, null, "com.phonegap.Crypto", "decrypt", [seed, string]);
 };
 
 Crypto.prototype.gotCryptedString = function(string) {

@@ -24,7 +24,7 @@ public class GeoListener {
     NetworkListener mNetwork;			// Network listener
     LocationManager mLocMan;			// Location manager
     
-    private GeoBroker broker;			// GeoBroker object
+    private Geolocation broker;			// GeoBroker object
 	
 	int interval;
 	
@@ -36,7 +36,7 @@ public class GeoListener {
 	 * @param time			Sampling period in msec
 	 * @param appView
 	 */
-	GeoListener(GeoBroker broker, String id, int time) {
+	GeoListener(Geolocation broker, String id, int time) {
 		this.id = id;
 		this.interval = time;
 		this.broker = broker;

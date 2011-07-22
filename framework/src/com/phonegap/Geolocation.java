@@ -22,7 +22,7 @@ import com.phonegap.api.PluginResult;
  * This class only starts and stops various GeoListeners, which consist of a GPS and a Network Listener
  */
 
-public class GeoBroker extends Plugin {
+public class Geolocation extends Plugin {
     
     // List of gGeolocation listeners
     private HashMap<String, GeoListener> geoListeners;
@@ -31,7 +31,7 @@ public class GeoBroker extends Plugin {
 	/**
 	 * Constructor.
 	 */
-	public GeoBroker() {
+	public Geolocation() {
 		this.geoListeners = new HashMap<String, GeoListener>();
 	}
 

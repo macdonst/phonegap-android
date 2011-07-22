@@ -6,8 +6,8 @@
  * Copyright (c) 2010-2011, IBM Corporation
  */
 
-if (!PhoneGap.hasResource("filetransfer")) {
-PhoneGap.addResource("filetransfer");
+if (!PhoneGap.hasResource("com.phonegap.FileTransfer")) {
+PhoneGap.addResource("com.phonegap.FileTransfer");
 
 /**
  * FileTransfer uploads a file to a remote server.

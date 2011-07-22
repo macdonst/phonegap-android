@@ -35,7 +35,7 @@ import android.util.Log;
  * and returns the captured image.  When the camera view is closed, the screen displayed before 
  * the camera view was shown is redisplayed.
  */
-public class CameraLauncher extends Plugin {
+public class Camera extends Plugin {
 
 	private static final int DATA_URL = 0;				// Return base64 encoded string
 	private static final int FILE_URI = 1;				// Return file uri (content://media/external/images/media/2 for Android)
@@ -52,7 +52,7 @@ public class CameraLauncher extends Plugin {
     /**
      * Constructor.
      */
-	public CameraLauncher() {
+	public Camera() {
 	}
 
 	/**

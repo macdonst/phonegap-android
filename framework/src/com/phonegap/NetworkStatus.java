@@ -21,7 +21,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-public class NetworkManager extends Plugin {
+public class NetworkStatus extends Plugin {
 	
     public static int NOT_REACHABLE = 0;
 	public static int REACHABLE_VIA_CARRIER_DATA_NETWORK = 1;
@@ -60,7 +60,7 @@ public class NetworkManager extends Plugin {
 	/**
 	 * Constructor.
 	 */
-	public NetworkManager()	{
+	public NetworkStatus()	{
 		this.receiver = null;
 	}
 

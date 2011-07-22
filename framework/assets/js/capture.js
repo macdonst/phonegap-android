@@ -6,8 +6,8 @@
  * Copyright (c) 2010-2011, IBM Corporation
  */
 
-if (!PhoneGap.hasResource("capture")) {
-PhoneGap.addResource("capture");
+if (!PhoneGap.hasResource("com.phonegap.MediaCapture")) {
+PhoneGap.addResource("com.phonegap.MediaCapture");
 	
 /**
  * Represents a single file.
@@ -33,7 +33,7 @@ var MediaFile = function(name, fullPath, type, lastModifiedDate, size){
  * @param {Function} errorCB
  */
 MediaFile.prototype.getFormatData = function(successCallback, errorCallback){
-	PhoneGap.exec(successCallback, errorCallback, "Capture", "getFormatData", [this.fullPath, this.type]);
+	PhoneGap.exec(successCallback, errorCallback, "com.phonegap.MediaCapture", "getFormatData", [this.fullPath, this.type]);
 };
 
 /**
@@ -84,7 +84,7 @@ var Capture = function(){
  * @param {CaptureAudioOptions} options
  */
 Capture.prototype.captureAudio = function(successCallback, errorCallback, options){
-	PhoneGap.exec(successCallback, errorCallback, "Capture", "captureAudio", [options]);
+	PhoneGap.exec(successCallback, errorCallback, "com.phonegap.MediaCapture", "captureAudio", [options]);
 };
 
 /**
@@ -95,7 +95,7 @@ Capture.prototype.captureAudio = function(successCallback, errorCallback, option
  * @param {CaptureImageOptions} options
  */
 Capture.prototype.captureImage = function(successCallback, errorCallback, options){
-	PhoneGap.exec(successCallback, errorCallback, "Capture", "captureImage", [options]);
+	PhoneGap.exec(successCallback, errorCallback, "com.phonegap.MediaCapture", "captureImage", [options]);
 };
 
 /**
@@ -129,7 +129,7 @@ Capture.prototype._castMediaFile = function(pluginResult){
  * @param {CaptureVideoOptions} options
  */
 Capture.prototype.captureVideo = function(successCallback, errorCallback, options){
-	PhoneGap.exec(successCallback, errorCallback, "Capture", "captureVideo", [options]);
+	PhoneGap.exec(successCallback, errorCallback, "com.phonegap.MediaCapture", "captureVideo", [options]);
 };
 
 /**

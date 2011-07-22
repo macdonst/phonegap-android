@@ -6,8 +6,8 @@
  * Copyright (c) 2010-2011, IBM Corporation
  */
 
-if (!PhoneGap.hasResource("network")) {
-PhoneGap.addResource("network");
+if (!PhoneGap.hasResource("com.phonegap.NetworkStatus")) {
+PhoneGap.addResource("com.phonegap.NetworkStatus");
 
 /**
  * This class contains information about the current network Connection.
@@ -67,7 +67,7 @@ Connection.NONE = "none";
  */
 Connection.prototype.getInfo = function(successCallback, errorCallback) {
     // Get info
-    PhoneGap.exec(successCallback, errorCallback, "Network Status", "getConnectionInfo", []);
+    PhoneGap.exec(successCallback, errorCallback, "com.phonegap.NetworkStatus", "getConnectionInfo", []);
 };
 
 

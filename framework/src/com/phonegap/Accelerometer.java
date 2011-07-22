@@ -27,7 +27,7 @@ import android.content.Context;
  * This class listens to the accelerometer sensor and stores the latest 
  * acceleration values x,y,z.
  */
-public class AccelListener extends Plugin implements SensorEventListener {
+public class Accelerometer extends Plugin implements SensorEventListener {
 
 	public static int STOPPED = 0;
 	public static int STARTING = 1;
@@ -47,12 +47,12 @@ public class AccelListener extends Plugin implements SensorEventListener {
     /**
      * Create an accelerometer listener.
      */
-    public AccelListener() {
+    public Accelerometer() {
         this.x = 0;
         this.y = 0;
         this.z = 0;
         this.timestamp = 0;
-        this.setStatus(AccelListener.STOPPED);
+        this.setStatus(Accelerometer.STOPPED);
      }
     
 	/**
@@ -93,10 +93,10 @@ public class AccelListener extends Plugin implements SensorEventListener {
 			}
 			else if (action.equals("getAcceleration")) {
 				// If not running, then this is an async call, so don't worry about waiting
-				if (this.status != AccelListener.RUNNING) {
+				if (this.status != Accelerometer.RUNNING) {
 					int r = this.start();
-					if (r == AccelListener.ERROR_FAILED_TO_START) {
-						return new PluginResult(PluginResult.Status.IO_EXCEPTION, AccelListener.ERROR_FAILED_TO_START);
+					if (r == Accelerometer.ERROR_FAILED_TO_START) {
+						return new PluginResult(PluginResult.Status.IO_EXCEPTION, Accelerometer.ERROR_FAILED_TO_START);
 					}
 					// Wait until running
 					long timeout = 2000;
@@ -109,7 +109,7 @@ public class AccelListener extends Plugin implements SensorEventListener {
 						}
 					}
 					if (timeout == 0) {
-						return new PluginResult(PluginResult.Status.IO_EXCEPTION, AccelListener.ERROR_FAILED_TO_START);						
+						return new PluginResult(PluginResult.Status.IO_EXCEPTION, Accelerometer.ERROR_FAILED_TO_START);						
 					}
 				}
 	            this.lastAccessTime = System.currentTimeMillis();
@@ -186,7 +186,7 @@ public class AccelListener extends Plugin implements SensorEventListener {
     public int start() {
 
 		// If already starting or running, then just return
-        if ((this.status == AccelListener.RUNNING) || (this.status == AccelListener.STARTING)) {
+        if ((this.status == Accelerometer.RUNNING) || (this.status == Accelerometer.STARTING)) {
         	return this.status;
         }
 
@@ -197,13 +197,13 @@ public class AccelListener extends Plugin implements SensorEventListener {
         if ((list != null) && (list.size() > 0)) {
             this.mSensor = list.get(0);
             this.sensorManager.registerListener(this, this.mSensor, SensorManager.SENSOR_DELAY_FASTEST);
-            this.setStatus(AccelListener.STARTING);
+            this.setStatus(Accelerometer.STARTING);
             this.lastAccessTime = System.currentTimeMillis();
         }
         
         // If error, then set status to error
         else {
-            this.setStatus(AccelListener.ERROR_FAILED_TO_START);
+            this.setStatus(Accelerometer.ERROR_FAILED_TO_START);
         }
         
         return this.status;
@@ -213,10 +213,10 @@ public class AccelListener extends Plugin implements SensorEventListener {
      * Stop listening to acceleration sensor.
      */
     public void stop() {
-        if (this.status != AccelListener.STOPPED) {
+        if (this.status != Accelerometer.STOPPED) {
         	this.sensorManager.unregisterListener(this);
         }
-        this.setStatus(AccelListener.STOPPED);
+        this.setStatus(Accelerometer.STOPPED);
     }
 
     /**
@@ -241,7 +241,7 @@ public class AccelListener extends Plugin implements SensorEventListener {
         }
         
         // If not running, then just return
-        if (this.status == AccelListener.STOPPED) {
+        if (this.status == Accelerometer.STOPPED) {
         	return;
         }
         
@@ -251,7 +251,7 @@ public class AccelListener extends Plugin implements SensorEventListener {
         this.y = event.values[1];
         this.z = event.values[2];            
 
-        this.setStatus(AccelListener.RUNNING);
+        this.setStatus(Accelerometer.RUNNING);
 
         // If values haven't been read for TIMEOUT time, then turn off accelerometer sensor to save power
 		if ((this.timestamp - this.lastAccessTime) > this.TIMEOUT) {

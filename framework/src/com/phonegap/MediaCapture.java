@@ -23,13 +23,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 
 import com.phonegap.api.Plugin;
 import com.phonegap.api.PluginResult;
 
-public class Capture extends Plugin {
+public class MediaCapture extends Plugin {
 
 	private static final String _DATA = "_data";	// The column name where the file path is stored
 	private static final int CAPTURE_AUDIO = 0;		// Constant for capture audio

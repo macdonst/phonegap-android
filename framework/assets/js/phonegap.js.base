@@ -396,7 +396,7 @@ document.addEventListener = function(evt, handler, capture) {
     else {
         // If subscribing to Android backbutton
         if (e === 'backbutton') {
-            PhoneGap.exec(null, null, "App", "overrideBackbutton", [true]);
+            PhoneGap.exec(null, null, "com.phonegap.App", "overrideBackbutton", [true]);
         }
 
         PhoneGap.m_document_addEventListener.call(document, evt, handler, capture);
@@ -412,7 +412,7 @@ document.removeEventListener = function(evt, handler, capture) {
 
     // If unsubscribing to Android backbutton
     if (e === 'backbutton') {
-        PhoneGap.exec(null, null, "App", "overrideBackbutton", [false]);
+        PhoneGap.exec(null, null, "com.phonegap.App", "overrideBackbutton", [false]);
     }
 
     PhoneGap.m_document_removeEventListener.call(document, evt, handler, capture);

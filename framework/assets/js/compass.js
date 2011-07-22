@@ -6,8 +6,8 @@
  * Copyright (c) 2010-2011, IBM Corporation
  */
 
-if (!PhoneGap.hasResource("compass")) {
-PhoneGap.addResource("compass");
+if (!PhoneGap.hasResource("com.phonegap.Compass")) {
+PhoneGap.addResource("com.phonegap.Compass");
 
 /**
  * This class provides access to device Compass data.
@@ -49,7 +49,7 @@ Compass.prototype.getCurrentHeading = function(successCallback, errorCallback, o
     }
 
     // Get heading
-    PhoneGap.exec(successCallback, errorCallback, "Compass", "getHeading", []);
+    PhoneGap.exec(successCallback, errorCallback, "com.phonegap.Compass", "getHeading", []);
 };
 
 /**
@@ -81,16 +81,16 @@ Compass.prototype.watchHeading= function(successCallback, errorCallback, options
     PhoneGap.exec(
         function(timeout) {
             if (timeout < (frequency + 10000)) {
-                PhoneGap.exec(null, null, "Compass", "setTimeout", [frequency + 10000]);
+                PhoneGap.exec(null, null, "com.phonegap.Compass", "setTimeout", [frequency + 10000]);
             }
         },
-        function(e) { }, "Compass", "getTimeout", []);
+        function(e) { }, "com.phonegap.Compass", "getTimeout", []);
 
     // Start watch timer to get headings
     var id = PhoneGap.createUUID();
     navigator.compass.timers[id] = setInterval(
         function() {
-            PhoneGap.exec(successCallback, errorCallback, "Compass", "getHeading", []);
+            PhoneGap.exec(successCallback, errorCallback, "com.phonegap.Compass", "getHeading", []);
         }, (frequency ? frequency : 1));
 
     return id;

@@ -6,8 +6,8 @@
  * Copyright (c) 2010-2011, IBM Corporation
  */
 
-if (!PhoneGap.hasResource("device")) {
-PhoneGap.addResource("device");
+if (!PhoneGap.hasResource("com.phonegap.Device")) {
+PhoneGap.addResource("com.phonegap.Device");
 
 /**
  * This represents the mobile device, and provides properties for inspecting the model, version, UUID of the
@@ -61,7 +61,7 @@ Device.prototype.getInfo = function(successCallback, errorCallback) {
     }
 
     // Get info
-    PhoneGap.exec(successCallback, errorCallback, "Device", "getDeviceInfo", []);
+    PhoneGap.exec(successCallback, errorCallback, "com.phonegap.Device", "getDeviceInfo", []);
 };
 
 /*

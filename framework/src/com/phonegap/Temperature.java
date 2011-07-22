@@ -21,7 +21,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.content.Context;
 
-public class TempListener extends Plugin implements SensorEventListener {
+public class Temperature extends Plugin implements SensorEventListener {
 	
     Sensor mSensor;	
 	private SensorManager sensorManager;
@@ -29,7 +29,7 @@ public class TempListener extends Plugin implements SensorEventListener {
 	/**
 	 * Constructor.
 	 */
-	public TempListener() {
+	public Temperature() {
 	}
 
 	/**

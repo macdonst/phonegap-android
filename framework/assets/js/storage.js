@@ -12,8 +12,8 @@
  * most manufacturers ship with Android 1.5 and do not do OTA Updates, this is required
  */
 
-if (!PhoneGap.hasResource("storage")) {
-PhoneGap.addResource("storage");
+if (!PhoneGap.hasResource("com.phonegap.Storage")) {
+PhoneGap.addResource("com.phonegap.Storage");
 
 /**
  * SQL result set object
@@ -255,7 +255,7 @@ DroidDB_Tx.prototype.executeSql = function(sql, params, successCallback, errorCa
     query.errorCallback = errorCallback;
 
     // Call native code
-    PhoneGap.exec(null, null, "Storage", "executeSql", [sql, params, query.id]);
+    PhoneGap.exec(null, null, "com.phonegap.Storage", "executeSql", [sql, params, query.id]);
 };
 
 var DatabaseShell = function() {
@@ -297,7 +297,7 @@ DatabaseShell.prototype.transaction = function(process, errorCallback, successCa
  * @return                  Database object
  */
 var DroidDB_openDatabase = function(name, version, display_name, size) {
-    PhoneGap.exec(null, null, "Storage", "openDatabase", [name, version, display_name, size]);
+    PhoneGap.exec(null, null, "com.phonegap.Storage", "openDatabase", [name, version, display_name, size]);
     var db = new DatabaseShell();
     return db;
 };

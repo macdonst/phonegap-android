@@ -6,8 +6,8 @@
  * Copyright (c) 2010-2011, IBM Corporation
  */
 
-if (!PhoneGap.hasResource("media")) {
-PhoneGap.addResource("media");
+if (!PhoneGap.hasResource("com.phonegap.Media")) {
+PhoneGap.addResource("com.phonegap.Media");
 
 /**
  * This class provides access to the device media, interfaces to both sound and video
@@ -92,28 +92,28 @@ MediaError.MEDIA_ERR_NONE_SUPPORTED = 4;
  * Start or resume playing audio file.
  */
 Media.prototype.play = function() {
-    PhoneGap.exec(null, null, "Media", "startPlayingAudio", [this.id, this.src]);
+    PhoneGap.exec(null, null, "com.phonegap.Media", "startPlayingAudio", [this.id, this.src]);
 };
 
 /**
  * Stop playing audio file.
  */
 Media.prototype.stop = function() {
-    return PhoneGap.exec(null, null, "Media", "stopPlayingAudio", [this.id]);
+    return PhoneGap.exec(null, null, "com.phonegap.Media", "stopPlayingAudio", [this.id]);
 };
 
 /**
  * Seek or jump to a new time in the track..
  */
 Media.prototype.seekTo = function(milliseconds) {
-    PhoneGap.exec(null, null, "Media", "seekToAudio", [this.id, milliseconds]);
+    PhoneGap.exec(null, null, "com.phonegap.Media", "seekToAudio", [this.id, milliseconds]);
 };
 
 /**
  * Pause playing audio file.
  */
 Media.prototype.pause = function() {
-    PhoneGap.exec(null, null, "Media", "pausePlayingAudio", [this.id]);
+    PhoneGap.exec(null, null, "com.phonegap.Media", "pausePlayingAudio", [this.id]);
 };
 
 /**
@@ -130,28 +130,28 @@ Media.prototype.getDuration = function() {
  * Get position of audio.
  */
 Media.prototype.getCurrentPosition = function(success, fail) {
-    PhoneGap.exec(success, fail, "Media", "getCurrentPositionAudio", [this.id]);
+    PhoneGap.exec(success, fail, "com.phonegap.Media", "getCurrentPositionAudio", [this.id]);
 };
 
 /**
  * Start recording audio file.
  */
 Media.prototype.startRecord = function() {
-    PhoneGap.exec(null, null, "Media", "startRecordingAudio", [this.id, this.src]);
+    PhoneGap.exec(null, null, "com.phonegap.Media", "startRecordingAudio", [this.id, this.src]);
 };
 
 /**
  * Stop recording audio file.
  */
 Media.prototype.stopRecord = function() {
-    PhoneGap.exec(null, null, "Media", "stopRecordingAudio", [this.id]);
+    PhoneGap.exec(null, null, "com.phonegap.Media", "stopRecordingAudio", [this.id]);
 };
 
 /**
  * Release the resources.
  */
 Media.prototype.release = function() {
-    PhoneGap.exec(null, null, "Media", "release", [this.id]);
+    PhoneGap.exec(null, null, "com.phonegap.Media", "release", [this.id]);
 };
 
 /**

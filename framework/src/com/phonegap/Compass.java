@@ -25,7 +25,7 @@ import android.content.Context;
 /**
  * This class listens to the compass sensor and stores the latest heading value.
  */
-public class CompassListener extends Plugin implements SensorEventListener {
+public class Compass extends Plugin implements SensorEventListener {
 
 	public static int STOPPED = 0;
 	public static int STARTING = 1;
@@ -45,9 +45,9 @@ public class CompassListener extends Plugin implements SensorEventListener {
 	/**
 	 * Constructor.
 	 */
-	public CompassListener() {
+	public Compass() {
         this.timeStamp = 0;
-        this.setStatus(CompassListener.STOPPED);
+        this.setStatus(Compass.STOPPED);
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class CompassListener extends Plugin implements SensorEventListener {
 						}
 					}
 					if (timeout == 0) {
-						return new PluginResult(PluginResult.Status.IO_EXCEPTION, AccelListener.ERROR_FAILED_TO_START);						
+						return new PluginResult(PluginResult.Status.IO_EXCEPTION, Accelerometer.ERROR_FAILED_TO_START);						
 					}
 				}
 				float f = this.getHeading();
@@ -163,7 +163,7 @@ public class CompassListener extends Plugin implements SensorEventListener {
 	public int start() {
 		
 		// If already starting or running, then just return
-        if ((this.status == CompassListener.RUNNING) || (this.status == CompassListener.STARTING)) {
+        if ((this.status == Compass.RUNNING) || (this.status == Compass.STARTING)) {
         	return this.status;
         }
 
@@ -175,12 +175,12 @@ public class CompassListener extends Plugin implements SensorEventListener {
 			this.mSensor = list.get(0);
 			this.sensorManager.registerListener(this, this.mSensor, SensorManager.SENSOR_DELAY_NORMAL);
             this.lastAccessTime = System.currentTimeMillis();
-            this.setStatus(CompassListener.STARTING);
+            this.setStatus(Compass.STARTING);
 		}
 
 		// If error, then set status to error
         else {
-            this.setStatus(CompassListener.ERROR_FAILED_TO_START);
+            this.setStatus(Compass.ERROR_FAILED_TO_START);
         }
         
         return this.status;
@@ -190,10 +190,10 @@ public class CompassListener extends Plugin implements SensorEventListener {
      * Stop listening to compass sensor.
      */
 	public void stop() {
-        if (this.status != CompassListener.STOPPED) {
+        if (this.status != Compass.STOPPED) {
         	this.sensorManager.unregisterListener(this);
         }
-        this.setStatus(CompassListener.STOPPED);
+        this.setStatus(Compass.STOPPED);
 	}
 	
 	
@@ -214,7 +214,7 @@ public class CompassListener extends Plugin implements SensorEventListener {
 		// Save heading
         this.timeStamp = System.currentTimeMillis();
 		this.heading = heading;
-		this.setStatus(CompassListener.RUNNING);
+		this.setStatus(Compass.RUNNING);
 
 		// If heading hasn't been read for TIMEOUT time, then turn off compass sensor to save power
 		if ((this.timeStamp - this.lastAccessTime) > this.TIMEOUT) {

@@ -30,14 +30,14 @@ import android.media.AudioManager;
  * 		android_asset: 		file name must start with /android_asset/sound.mp3
  * 		sdcard:				file name is just sound.mp3
  */
-public class AudioHandler extends Plugin {
+public class Media extends Plugin {
 
 	HashMap<String,AudioPlayer> players;	// Audio player object
 	
 	/**
 	 * Constructor.
 	 */
-	public AudioHandler() {
+	public Media() {
 		this.players = new HashMap<String,AudioPlayer>();
 	}
 

@@ -13,12 +13,12 @@ import org.json.JSONException;
 import com.phonegap.api.Plugin;
 import com.phonegap.api.PluginResult;
 
-public class CryptoHandler extends Plugin {
+public class Crypto extends Plugin {
 		
 	/**
 	 * Constructor.
 	 */
-	public CryptoHandler() {
+	public Crypto() {
 	}
 
 	/**

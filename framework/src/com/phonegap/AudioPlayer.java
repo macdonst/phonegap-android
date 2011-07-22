@@ -50,7 +50,7 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
 	private static int MEDIA_ERROR_PAUSE_STATE = 7;
 	private static int MEDIA_ERROR_STOP_STATE = 8;
 
-	private AudioHandler handler;					// The AudioHandler object
+	private Media handler;					// The AudioHandler object
 	private String id;								// The id of this player (used to identify Media object in JavaScript)
 	private int state = MEDIA_NONE;					// State of recording or playback
 	private String audioFile = null;				// File name to play or record to
@@ -68,7 +68,7 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
 	 * @param handler			The audio handler object
 	 * @param id				The id of this audio player
 	 */
-	public AudioPlayer(AudioHandler handler, String id) {
+	public AudioPlayer(Media handler, String id) {
 		this.handler = handler;
 		this.id = id;
         this.tempFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/tmprecording.mp3";

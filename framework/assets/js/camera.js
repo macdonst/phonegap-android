@@ -6,8 +6,8 @@
  * Copyright (c) 2010-2011, IBM Corporation
  */
 
-if (!PhoneGap.hasResource("camera")) {
-PhoneGap.addResource("camera");
+if (!PhoneGap.hasResource("com.phonegap.Camera")) {
+PhoneGap.addResource("com.phonegap.Camera");
 
 /**
  * This class provides access to the device camera.
@@ -92,7 +92,7 @@ Camera.prototype.getPicture = function(successCallback, errorCallback, options) 
     if (typeof this.options.sourceType === "number") {
         sourceType = this.options.sourceType;
     }
-    PhoneGap.exec(successCallback, errorCallback, "Camera", "takePicture", [quality, destinationType, sourceType, maxResolution]);
+    PhoneGap.exec(successCallback, errorCallback, "com.phonegap.Camera", "takePicture", [quality, destinationType, sourceType, maxResolution]);
 };
 
 PhoneGap.addConstructor(function() {

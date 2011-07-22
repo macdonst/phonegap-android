@@ -6,8 +6,8 @@
  * Copyright (c) 2010-2011, IBM Corporation
  */
 
-if (!PhoneGap.hasResource("contact")) {
-PhoneGap.addResource("contact");
+if (!PhoneGap.hasResource("com.phonegap.Contacts")) {
+PhoneGap.addResource("com.phonegap.Contacts");
 
 /**
 * Contains information about a single contact.
@@ -78,7 +78,7 @@ Contact.prototype.remove = function(successCB, errorCB) {
         errorCB(errorObj);
     }
     else {
-        PhoneGap.exec(successCB, errorCB, "Contacts", "remove", [this.id]);
+        PhoneGap.exec(successCB, errorCB, "com.phonegap.Contacts", "remove", [this.id]);
     }
 };
 
@@ -142,7 +142,7 @@ Contact.prototype.clone = function() {
 * @param errorCB error callback
 */
 Contact.prototype.save = function(successCB, errorCB) {
-    PhoneGap.exec(successCB, errorCB, "Contacts", "save", [this]);
+    PhoneGap.exec(successCB, errorCB, "com.phonegap.Contacts", "save", [this]);
 };
 
 /**
@@ -248,7 +248,7 @@ Contacts.prototype.find = function(fields, successCB, errorCB, options) {
             errorCB({"code": ContactError.INVALID_ARGUMENT_ERROR});
         }
     } else {
-        PhoneGap.exec(successCB, errorCB, "Contacts", "search", [fields, options]);        
+        PhoneGap.exec(successCB, errorCB, "com.phonegap.Contacts", "search", [fields, options]);        
     }
 };
 

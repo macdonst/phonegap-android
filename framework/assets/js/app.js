@@ -6,8 +6,8 @@
  * Copyright (c) 2010-2011, IBM Corporation
  */
 
-if (!PhoneGap.hasResource("app")) {
-PhoneGap.addResource("app");
+if (!PhoneGap.hasResource("com.phonegap.App")) {
+PhoneGap.addResource("com.phonegap.App");
 (function() {
 
 /**
@@ -20,7 +20,7 @@ var App = function() {};
  * Clear the resource cache.
  */
 App.prototype.clearCache = function() {
-    PhoneGap.exec(null, null, "App", "clearCache", []);
+    PhoneGap.exec(null, null, "com.phonegap.App", "clearCache", []);
 };
 
 /**
@@ -41,14 +41,14 @@ App.prototype.clearCache = function() {
  *      app.loadUrl("http://server/myapp/index.html", {wait:2000, loadingDialog:"Wait,Loading App", loadUrlTimeoutValue: 60000});
  */
 App.prototype.loadUrl = function(url, props) {
-    PhoneGap.exec(null, null, "App", "loadUrl", [url, props]);
+    PhoneGap.exec(null, null, "com.phonegap.App", "loadUrl", [url, props]);
 };
 
 /**
  * Cancel loadUrl that is waiting to be loaded.
  */
 App.prototype.cancelLoadUrl = function() {
-    PhoneGap.exec(null, null, "App", "cancelLoadUrl", []);
+    PhoneGap.exec(null, null, "com.phonegap.App", "cancelLoadUrl", []);
 };
 
 /**
@@ -56,7 +56,7 @@ App.prototype.cancelLoadUrl = function() {
  * Instead of BACK button loading the previous web page, it will exit the app.
  */
 App.prototype.clearHistory = function() {
-    PhoneGap.exec(null, null, "App", "clearHistory", []);
+    PhoneGap.exec(null, null, "com.phonegap.App", "clearHistory", []);
 };
 
 /**
@@ -69,14 +69,14 @@ App.prototype.clearHistory = function() {
  * @param override		T=override, F=cancel override
  */
 App.prototype.overrideBackbutton = function(override) {
-    PhoneGap.exec(null, null, "App", "overrideBackbutton", [override]);
+    PhoneGap.exec(null, null, "com.phonegap.App", "overrideBackbutton", [override]);
 };
 
 /**
  * Exit and terminate the application.
  */
 App.prototype.exitApp = function() {
-	return PhoneGap.exec(null, null, "App", "exitApp", []);
+	return PhoneGap.exec(null, null, "com.phonegap.App", "exitApp", []);
 };
 
 PhoneGap.addConstructor(function() {
