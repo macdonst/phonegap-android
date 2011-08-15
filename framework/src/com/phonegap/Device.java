@@ -14,10 +14,15 @@ import org.json.JSONObject;
 import com.phonegap.api.PhonegapActivity;
 import com.phonegap.api.Plugin;
 import com.phonegap.api.PluginResult;
+
+import android.content.Context;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 
 public class Device extends Plugin {
 	
+    private static final String LOG_TAG = "Device";
     public static String phonegapVersion = "1.0.0";               // PhoneGap version
 	public static String platform = "Android";					// Device OS
 	public static String uuid;									// Device UUID
@@ -103,6 +108,13 @@ public class Device extends Plugin {
 	 */
 	public String getUuid()	{		
 		String uuid = Settings.Secure.getString(this.ctx.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+		
+		// One manufacture sets this ID for all it's devices by mistake.
+		// Some don't return anything at all.
+		if ("9774d56d682e549c".equals(uuid) || "".equals(uuid) || uuid == null) {	   
+		    uuid = ((TelephonyManager) ctx.getSystemService( Context.TELEPHONY_SERVICE )).getDeviceId();
+		}
+		
 		return uuid;
 	}
 
