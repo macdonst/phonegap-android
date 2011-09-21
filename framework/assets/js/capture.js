@@ -107,8 +107,7 @@ Capture.prototype.captureImage = function(successCallback, errorCallback, option
  */
 Capture.prototype._castMediaFile = function(pluginResult){
 	var mediaFiles = [];
-	var i;
-	for (i = 0; i < pluginResult.message.length; i++) {
+	for (var i = 0, len = pluginResult.message.length; i < len; i++) {
 		var mediaFile = new MediaFile();
 		mediaFile.name = pluginResult.message[i].name;
 		mediaFile.fullPath = pluginResult.message[i].fullPath;

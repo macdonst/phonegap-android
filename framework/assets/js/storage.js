@@ -325,7 +325,7 @@ var CupcakeLocalStorage = function() {
 				    var i;
 					transaction.executeSql('CREATE TABLE IF NOT EXISTS storage (id NVARCHAR(40) PRIMARY KEY, body NVARCHAR(255))');
 					transaction.executeSql('SELECT * FROM storage', [], function(tx, result) {
-						for(var i = 0; i < result.rows.length; i++) {
+						for(var i = 0, len = result.rows.length; i < len; i++) {
 							storage[result.rows.item(i)['id']] =  result.rows.item(i)['body'];
 						}
 						setLength(result.rows.length);

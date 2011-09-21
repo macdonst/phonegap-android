@@ -562,7 +562,7 @@ PhoneGap.stringify = function(args) {
     if (typeof JSON === "undefined") {
         var s = "[";
         var i, type, start, name, nameType, a;
-        for (i = 0; i < args.length; i++) {
+        for (i = 0, len = args.length; i < len; i++) {
             if (args[i] !== null) {
                 if (i > 0) {
                     s = s + ",";
@@ -624,7 +624,7 @@ PhoneGap.clone = function(obj) {
     
     if(obj instanceof Array){
         retVal = [];
-        for(i = 0; i < obj.length; ++i){
+        for(i = 0, len = obj.length; i < len; ++i){
             retVal.push(PhoneGap.clone(obj[i]));
         }
         return retVal;
@@ -825,7 +825,7 @@ PhoneGap.run_command = function() {
     var uri = [];
     var dict = null;
     var i;
-    for (i = 1; i < args.length; i++) {
+    for (i = 1, len = args.length; i < len; i++) {
         var arg = args[i];
         if (arg === undefined || arg === null) {
             arg = '';

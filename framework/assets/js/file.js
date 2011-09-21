@@ -935,7 +935,7 @@ LocalFileSystem.prototype._castEntry = function(pluginResult) {
 LocalFileSystem.prototype._castEntries = function(pluginResult) {
     var entries = pluginResult.message;
     var retVal = [];
-    for (var i=0; i<entries.length; i++) {
+    for (var i=0, len=entries.length; i<len; i++) {
         retVal.push(window.localFileSystem._createEntry(entries[i]));
     }
     pluginResult.message = retVal;

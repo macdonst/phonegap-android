@@ -94,42 +94,42 @@ Contact.prototype.clone = function() {
     clonedContact.rawId = null;
     // Loop through and clear out any id's in phones, emails, etc.
     if (clonedContact.phoneNumbers) {
-        for (i = 0; i < clonedContact.phoneNumbers.length; i++) {
+        for (i = 0, len = clonedContact.phoneNumbers.length; i < len; i++) {
             clonedContact.phoneNumbers[i].id = null;
         }
     }
     if (clonedContact.emails) {
-        for (i = 0; i < clonedContact.emails.length; i++) {
+        for (i = 0, len = clonedContact.emails.length; i < len; i++) {
             clonedContact.emails[i].id = null;
         }
     }
     if (clonedContact.addresses) {
-        for (i = 0; i < clonedContact.addresses.length; i++) {
+        for (i = 0, len = clonedContact.addresses.length; i < len; i++) {
             clonedContact.addresses[i].id = null;
         }
     }
     if (clonedContact.ims) {
-        for (i = 0; i < clonedContact.ims.length; i++) {
+        for (i = 0, len = clonedContact.ims.length; i < len; i++) {
             clonedContact.ims[i].id = null;
         }
     }
     if (clonedContact.organizations) {
-        for (i = 0; i < clonedContact.organizations.length; i++) {
+        for (i = 0, len = clonedContact.organizations.length; i < len; i++) {
             clonedContact.organizations[i].id = null;
         }
     }
     if (clonedContact.tags) {
-        for (i = 0; i < clonedContact.tags.length; i++) {
+        for (i = 0, len = clonedContact.tags.length; i < len; i++) {
             clonedContact.tags[i].id = null;
         }
     }
     if (clonedContact.photos) {
-        for (i = 0; i < clonedContact.photos.length; i++) {
+        for (i = 0, len = clonedContact.photos.length; i < len; i++) {
             clonedContact.photos[i].id = null;
         }
     }
     if (clonedContact.urls) {
-        for (i = 0; i < clonedContact.urls.length; i++) {
+        for (i = 0, len = clonedContact.urls.length; i < len; i++) {
             clonedContact.urls[i].id = null;
         }
     }
@@ -280,8 +280,7 @@ Contacts.prototype.create = function(properties) {
 */
 Contacts.prototype.cast = function(pluginResult) {
 	var contacts = [];
-	var i;
-	for (i=0; i<pluginResult.message.length; i++) {
+	for (var i=0, len=pluginResult.message.length; i<len; i++) {
 		contacts.push(navigator.contacts.create(pluginResult.message[i]));
 	}
 	pluginResult.message = contacts;
