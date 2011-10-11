@@ -58,35 +58,46 @@ public class FileTransfer extends Plugin {
 	*/
 	@Override
 	public PluginResult execute(String action, JSONArray args, String callbackId) {
-		String file = null;
-		String server = null;
-		try {
-			file = args.getString(0);
-			server = args.getString(1);
-		}
-		catch (JSONException e) {
-			Log.d(LOG_TAG, "Missing filename or server name");
-			return new PluginResult(PluginResult.Status.JSON_EXCEPTION, "Missing filename or server name");
-		}
-		
-		// Setup the options
-		String fileKey = null;
-		String fileName = null;
-		String mimeType = null;		
-		
-		fileKey = getArgument(args, 2, "file");		
-		fileName = getArgument(args, 3, "image.jpg");
-		mimeType = getArgument(args, 4, "image/jpeg");
 
 		try {
-			JSONObject params = args.optJSONObject(5);
-			boolean trustEveryone = args.optBoolean(6);
-			boolean chunkedMode = args.getBoolean(7);
-
 			if (action.equals("upload")) {
-				FileUploadResult r = upload(file, server, fileKey, fileName, mimeType, params, trustEveryone, chunkedMode);
+		        String file = null;
+		        String server = null;
+		        try {
+		            file = args.getString(0);
+		            server = args.getString(1);
+		        }
+		        catch (JSONException e) {
+		            Log.d(LOG_TAG, "Missing filename or server name");
+		            return new PluginResult(PluginResult.Status.JSON_EXCEPTION, "Missing filename or server name");
+		        }
+		        
+		        // Setup the options
+		        String fileKey = null;
+		        String fileName = null;
+		        String mimeType = null;     
+		        
+		        fileKey = getArgument(args, 2, "file");     
+		        fileName = getArgument(args, 3, "image.jpg");
+		        mimeType = getArgument(args, 4, "image/jpeg");
+
+		        JSONObject params = args.optJSONObject(5);
+	            boolean trustEveryone = args.optBoolean(6);
+	            boolean chunkedMode = args.getBoolean(7);
+
+		        FileUploadResult r = upload(file, server, fileKey, fileName, mimeType, params, trustEveryone, chunkedMode);
 				Log.d(LOG_TAG, "****** About to return a result from upload");
 				return new PluginResult(PluginResult.Status.OK, r.toJSONObject());
+			} else if (action.equals("uploadMultiple")) {
+			    JSONArray files = args.getJSONArray(0);
+			    String server = args.getString(1);
+			    JSONObject params = args.getJSONObject(2);
+                boolean trustEveryone = args.optBoolean(3);
+                boolean chunkedMode = args.getBoolean(4);
+			    
+                FileUploadResult r = uploadMultiple(files, server, params, trustEveryone, chunkedMode);
+                Log.d(LOG_TAG, "****** About to return a result from upload");
+			    return new PluginResult(PluginResult.Status.OK, r.toJSONObject());
 			} else {
 	            return new PluginResult(PluginResult.Status.INVALID_ACTION);
 			}
@@ -113,7 +124,7 @@ public class FileTransfer extends Plugin {
 		}
 	}
 
-	// always verify the host - don't check for certificate
+    // always verify the host - don't check for certificate
 	final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
 		public boolean verify(String hostname, SSLSession session) {
 			return true;
@@ -351,6 +362,170 @@ public class FileTransfer extends Plugin {
 		return result;
 	}
 
+
+    private FileUploadResult uploadMultiple(JSONArray files, String server,
+            JSONObject params, boolean trustEveryone, boolean chunkedMode) throws IOException {
+        // Create return object
+        FileUploadResult result = new FileUploadResult();
+
+        HttpURLConnection conn = null;
+        DataOutputStream dos = null;
+
+        int bytesRead, bytesAvailable, bufferSize;
+        long totalBytes;
+        byte[] buffer;
+        int maxBufferSize = 8096;
+
+        //------------------ CLIENT REQUEST
+        // open a URL connection to the server 
+        URL url = new URL(server);
+        
+        // Open a HTTP connection to the URL based on protocol 
+        if (url.getProtocol().toLowerCase().equals("https")) {
+            // Using standard HTTPS connection. Will not allow self signed certificate
+            if (!trustEveryone) {
+                conn = (HttpsURLConnection) url.openConnection();
+            }
+            // Use our HTTPS connection that blindly trusts everyone.
+            // This should only be used in debug environments
+            else {
+                // Setup the HTTPS connection class to trust everyone
+                trustAllHosts();
+                HttpsURLConnection https = (HttpsURLConnection) url.openConnection();
+                // Save the current hostnameVerifier
+                defaultHostnameVerifier = https.getHostnameVerifier();
+                // Setup the connection not to verify hostnames 
+                https.setHostnameVerifier(DO_NOT_VERIFY);
+                conn = https;
+            }
+        } 
+        // Return a standard HTTP connection
+        else {
+            conn = (HttpURLConnection) url.openConnection();
+        }
+        
+        // Allow Inputs
+        conn.setDoInput(true);
+        
+        // Allow Outputs
+        conn.setDoOutput(true);
+        
+        // Don't use a cached copy.
+        conn.setUseCaches(false);
+        
+        // Use a post method.
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Connection", "Keep-Alive");
+        conn.setRequestProperty("Content-Type", "multipart/form-data;boundary="+BOUNDRY);
+
+        // Set the cookies on the response
+        String cookie = CookieManager.getInstance().getCookie(server);
+        if (cookie != null) {
+            conn.setRequestProperty("Cookie", cookie);
+        }
+        
+        // Should set this up as an option
+        if (chunkedMode) {
+            conn.setChunkedStreamingMode(maxBufferSize);
+        }
+            
+        dos = new DataOutputStream( conn.getOutputStream() );
+
+        // Send any extra parameters
+        try {
+            for (Iterator iter = params.keys(); iter.hasNext();) {
+                Object key = iter.next();
+                dos.writeBytes(LINE_START + BOUNDRY + LINE_END); 
+                dos.writeBytes("Content-Disposition: form-data; name=\"" +  key.toString() + "\";");
+                dos.writeBytes(LINE_END + LINE_END); 
+                dos.write(params.getString(key.toString()).getBytes());
+                dos.writeBytes(LINE_END); 
+            }
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, e.getMessage(), e); 
+        }
+
+        Log.d(LOG_TAG, "We have " + files.length() + " files to upload");
+        for (int i=0; i<files.length(); i++) { 
+            
+            // Get a input stream of the file on the phone
+            String fileName;
+            try {
+                fileName = files.getString(i);
+            } catch (JSONException e) {
+                throw new IOException("No such file");
+            }
+            InputStream fileInputStream = getPathFromUri(fileName);
+            Log.d(LOG_TAG, "File name is = " + fileName);
+            
+            dos.writeBytes(LINE_START + BOUNDRY + LINE_END);
+            dos.writeBytes("Content-Disposition: form-data; name=\"ufile[]\";" + " filename=\"" + fileName.substring(fileName.lastIndexOf("/")+1) +"\"" + LINE_END);
+            //dos.writeBytes("Content-Type: " + mimeType + LINE_END); 
+            dos.writeBytes(LINE_END);
+            
+            // create a buffer of maximum size
+            bytesAvailable = fileInputStream.available();
+            bufferSize = Math.min(bytesAvailable, maxBufferSize);
+            buffer = new byte[bufferSize];
+            
+            // read file and write it into form...
+            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+            totalBytes = 0;
+    
+            while (bytesRead > 0) {
+                totalBytes += bytesRead;
+                result.setBytesSent(totalBytes);
+                dos.write(buffer, 0, bufferSize);
+                bytesAvailable = fileInputStream.available();
+                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+            }
+    
+            // send multipart form data necesssary after file data...
+            dos.writeBytes(LINE_END);
+            dos.writeBytes(LINE_START + BOUNDRY + LINE_START + LINE_END);
+            
+            // close streams
+            fileInputStream.close();
+        }
+        
+        // close the data output stream
+        dos.flush();
+        dos.close();
+
+        //------------------ read the SERVER RESPONSE
+        StringBuffer responseString = new StringBuffer("");
+        DataInputStream inStream;
+        try {
+            inStream = new DataInputStream ( conn.getInputStream() );
+        } catch(FileNotFoundException e) {
+            throw new IOException("Received error from server");
+        }
+        
+        String line;
+        while (( line = inStream.readLine()) != null) {
+            responseString.append(line);
+        }
+        Log.d(LOG_TAG, "got response from server");
+        Log.d(LOG_TAG, responseString.toString());
+
+        // send request and retrieve response
+        result.setResponseCode(conn.getResponseCode());
+        result.setResponse(responseString.toString());
+
+        inStream.close();
+        conn.disconnect();
+        
+        // Revert back to the proper verifier and socket factories
+        if (trustEveryone && url.getProtocol().toLowerCase().equals("https")) {
+            ((HttpsURLConnection)conn).setHostnameVerifier(defaultHostnameVerifier);
+            HttpsURLConnection.setDefaultSSLSocketFactory(defaultSSLSocketFactory);
+        }        
+        
+        return result;
+    }
+	
+	
 	/**
      * Get an input stream based on file path or content:// uri
      * 

@@ -72,6 +72,27 @@ FileTransfer.prototype.upload = function(filePath, server, successCallback, erro
     PhoneGap.exec(successCallback, errorCallback, 'FileTransfer', 'upload', [filePath, server, fileKey, fileName, mimeType, params, debug, chunkedMode]);
 };
 
+FileTransfer.prototype.uploadMultiple = function(files, server, successCallback, errorCallback, options, debug) {
+
+    // check for options
+    var params = null;
+    var chunkedMode = true;
+    if (options) {
+        if (options.chunkedMode != null || typeof options.chunkedMode != "undefined") {
+            chunkedMode = options.chunkedMode;
+        }
+        if (options.params) {
+            params = options.params;
+        }
+        else {
+            params = {};
+        }
+    }
+
+    PhoneGap.exec(successCallback, errorCallback, 'FileTransfer', 'uploadMultiple', [files, server, params, debug, chunkedMode]);
+};
+
+
 /**
  * Options to customize the HTTP request used to upload files.
  * @constructor
